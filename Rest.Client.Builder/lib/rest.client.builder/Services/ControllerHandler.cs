@@ -13,19 +13,45 @@ internal sealed class ControllerHandler : IControllerHandler
     
     public void HandleController(Type controllerType, StringBuilder fileContent)
     {
+        string controllerName = controllerType.Name;
         fileContent.AppendLine();
-        fileContent.AppendLine($"### {controllerType.Name}");
+        fileContent.AppendLine($"# {controllerName}");
+        fileContent.AppendLine();
         var attributes = (RouteAttribute)controllerType
             .GetCustomAttributes(_routeAttributeType, false)
             .FirstOrDefault();
-        GetRoutingFromController(attributes, controllerType);
-        HandleGetMethods(controllerType, fileContent);
+        var controllerRouting = GetRoutingFromController(attributes, controllerName);
+        HandleGetMethods(controllerType, fileContent, controllerRouting);
 
     }
 
-    private void HandleGetMethods(Type controllerType, StringBuilder fileContent)
+    private void HandleGetMethods(Type controllerType, StringBuilder fileContent, string controllerRouting)
     {
         var methods = GetMethodsByAttribute(controllerType, _getRouteAttributeType);
+        foreach (var method in methods)
+        {
+            var attribute = (HttpGetAttribute)method
+                .GetCustomAttributes(_getRouteAttributeType, false)
+                .FirstOrDefault();
+
+            fileContent.AppendLine("###");
+            fileContent.Append("GET ");
+            fileContent.Append($"{{url}}/{controllerRouting}");
+            if (attribute.Template is not null)
+            {
+                fileContent.Append("/");
+                string value = attribute.Template;
+                if (value.Any(x => x == ':'))
+                {
+                    value = $"{value.Substring(0, value.IndexOf(':'))}}}";
+                }
+                fileContent.Append(value);
+            }
+
+            fileContent.AppendLine();
+            var tmp = fileContent.ToString();
+        }
+        
         
     }
 
@@ -34,10 +60,10 @@ internal sealed class ControllerHandler : IControllerHandler
             .GetMethods()
             .Where(x => x.GetCustomAttributes(attributeType, false).Length != 0);
 
-    private string GetRoutingFromController(RouteAttribute attribute, Type controllerType)
+    private string GetRoutingFromController(RouteAttribute attribute, string controllerName)
     {
-        string name = controllerType.Name;
+        string routeFromController = controllerName.Replace("Controller", "");
         string template = attribute.Template;
-        return string.Empty;
+        return template.Replace("[controller]", routeFromController);
     }
 }
