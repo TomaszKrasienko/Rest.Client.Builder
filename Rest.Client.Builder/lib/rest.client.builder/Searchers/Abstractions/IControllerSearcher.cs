@@ -1,6 +1,8 @@
+using System.Reflection;
+
 namespace rest.client.builder.Searchers.Abstractions;
 
-public interface IControllerSearcher
+internal interface IControllerSearcher
 {
-    
+    List<Type> GetAllControllersFromAssemblies(List<Assembly> assemblies);
 }

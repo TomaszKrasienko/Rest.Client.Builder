@@ -12,6 +12,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\..\lib\rest.client.builder\rest.client.builder.csproj" />
       <ProjectReference Include="..\test.solution.application\test.solution.application.csproj" />
     </ItemGroup>
 

@@ -1,6 +1,6 @@
-namespace rest.client.builder.Handlers.Abstractions;
+namespace rest.client.builder.Services.Abstractions;
 
-public interface IRestClientFileService
+internal interface IRestClientFileService
 {
-    
+    void Execute();
 }

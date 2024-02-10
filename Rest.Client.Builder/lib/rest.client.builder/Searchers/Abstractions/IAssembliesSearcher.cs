@@ -1,6 +1,8 @@
+using System.Reflection;
+
 namespace rest.client.builder.Searchers.Abstractions;
 
-public interface IAssembliesSearcher
+internal interface IAssembliesSearcher
 {
-    
+    List<Assembly> GetAllAssemblies();
 }

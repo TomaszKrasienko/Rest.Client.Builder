@@ -1,3 +1,4 @@
+using rest.client.builder.Configuration;
 using test.solution.application.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -8,6 +9,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddControllers();
 builder.Services.AddSingleton<ITestDataService, TestDataService>();
+builder.Services.AddRestClientBuilder();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
