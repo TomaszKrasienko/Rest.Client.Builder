@@ -26,5 +26,6 @@ public static class Extensions
 
     private static IServiceCollection AddServices(this IServiceCollection services)
         => services
-            .AddSingleton<IRestClientFileService, RestClientFileService>();
+            .AddSingleton<IRestClientFileService, RestClientFileService>()
+            .AddSingleton<IControllerHandler, ControllerHandler>();
 }
