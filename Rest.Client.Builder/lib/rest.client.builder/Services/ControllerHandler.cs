@@ -1,6 +1,8 @@
 using System.Reflection;
 using System.Text;
 using Microsoft.AspNetCore.Mvc;
+using rest.client.builder.Const;
+using rest.client.builder.Extensions;
 using rest.client.builder.Services.Abstractions;
 
 namespace rest.client.builder.Services;
@@ -14,15 +16,33 @@ internal sealed class ControllerHandler : IControllerHandler
     public void HandleController(Type controllerType, StringBuilder fileContent)
     {
         string controllerName = controllerType.Name;
-        fileContent.AppendLine();
-        fileContent.AppendLine($"# {controllerName}");
-        fileContent.AppendLine();
-        var attributes = (RouteAttribute)controllerType
+        fileContent
+            .AddControllerHeading(controllerName)
+            .AddNewLine();
+
+        var controllerRouting = GetControllerRouting(controllerType);
+        HandleGetMethods(controllerType, fileContent, controllerRouting);
+    }
+    
+    //Todo: after extends it possible to multiple attributes?
+    private string GetControllerRouting(Type controllerType)
+    {
+        var attribute = (RouteAttribute)controllerType
             .GetCustomAttributes(_routeAttributeType, false)
             .FirstOrDefault();
-        var controllerRouting = GetRoutingFromController(attributes, controllerName);
-        HandleGetMethods(controllerType, fileContent, controllerRouting);
+        if (attribute is null)
+        {
+            return string.Empty;
+        }
+        
+        string template = attribute.Template;
+        if (template.Contains(RoutingKeyWords.ControllerRoutingTemplate))
+        {
+            string controllerNameRoute = controllerType.Name.Replace(RoutingKeyWords.ControllerSufix, string.Empty);
+            template = template.Replace(RoutingKeyWords.ControllerRoutingTemplate, string.Empty);
+        }
 
+        return template;
     }
 
     private void HandleGetMethods(Type controllerType, StringBuilder fileContent, string controllerRouting)
@@ -49,6 +69,7 @@ internal sealed class ControllerHandler : IControllerHandler
             }
 
             fileContent.AppendLine();
+            fileContent.AppendLine();
             var tmp = fileContent.ToString();
         }
         
@@ -60,10 +81,5 @@ internal sealed class ControllerHandler : IControllerHandler
             .GetMethods()
             .Where(x => x.GetCustomAttributes(attributeType, false).Length != 0);
 
-    private string GetRoutingFromController(RouteAttribute attribute, string controllerName)
-    {
-        string routeFromController = controllerName.Replace("Controller", "");
-        string template = attribute.Template;
-        return template.Replace("[controller]", routeFromController);
-    }
+
 }

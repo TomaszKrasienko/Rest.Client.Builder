@@ -1,5 +1,6 @@
 using System.Text;
 using Microsoft.AspNetCore.Mvc;
+using rest.client.builder.Extensions;
 using rest.client.builder.Searchers.Abstractions;
 using rest.client.builder.Services.Abstractions;
 
@@ -24,7 +25,9 @@ internal sealed class RestClientFileService : IRestClientFileService
     public void Execute()
     {
         //add url variable
-        fileContent = fileContent.AppendLine($"@url={_urlAddress}");
+        fileContent
+            .AddAddressVariable(_urlAddress)
+            .AddNewLine();
         //get all assemblies
         var assemblies = _assembliesSearcher.GetAllAssemblies();
         //search all controllers
