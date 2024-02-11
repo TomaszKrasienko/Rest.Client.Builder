@@ -1,4 +1,5 @@
 using Microsoft.Extensions.DependencyInjection;
+using rest.client.builder.Builders;
 using rest.client.builder.HostedServices;
 using rest.client.builder.Searchers;
 using rest.client.builder.Searchers.Abstractions;

@@ -15,7 +15,8 @@ internal sealed class RestClientFileService : IRestClientFileService
     private readonly IControllerSearcher _controllerSearcher;
     private readonly IControllerHandler _controllerHandler;
     
-    public RestClientFileService(IAssembliesSearcher assembliesSearcher, IControllerSearcher controllerSearcher, IControllerHandler controllerHandler)
+    public RestClientFileService(IAssembliesSearcher assembliesSearcher, IControllerSearcher controllerSearcher, 
+        IControllerHandler controllerHandler)
     {
         _assembliesSearcher = assembliesSearcher;
         _controllerSearcher = controllerSearcher;

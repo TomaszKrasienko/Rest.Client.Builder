@@ -1,6 +1,7 @@
 using System.Reflection;
 using System.Text;
 using Microsoft.AspNetCore.Mvc;
+using rest.client.builder.Builders;
 using rest.client.builder.Const;
 using rest.client.builder.Extensions;
 using rest.client.builder.Services.Abstractions;
@@ -12,7 +13,8 @@ internal sealed class ControllerHandler : IControllerHandler
     private readonly Type _routeAttributeType = typeof(RouteAttribute);
     private readonly Type _getRouteAttributeType = typeof(HttpGetAttribute);
     private readonly Type _postRouteAttributeType = typeof(HttpPostAttribute);
-    
+
+
     public void HandleController(Type controllerType, StringBuilder fileContent)
     {
         string controllerName = controllerType.Name;
@@ -45,37 +47,13 @@ internal sealed class ControllerHandler : IControllerHandler
         return template;
     }
 
-    private void HandleGetMethods(Type controllerType, StringBuilder fileContent, string controllerRouting)
+    private void HandleGetMethods(Type controllerType, StringBuilder fileContent, string controllerRoute)
     {
         var methods = GetMethodsByAttribute(controllerType, _getRouteAttributeType);
         foreach (var method in methods)
         {
-            StringBuilder methodAddress = new StringBuilder();
-            methodAddress.AddNewRequestSign();
-            var attribute = (HttpGetAttribute)method
-                .GetCustomAttributes(_getRouteAttributeType, false)
-                .FirstOrDefault();
-            
-            string methodRouting = string.Empty;
-            if (attribute!.Template is not null)
-            {
-                string value = attribute.Template;
-                if (value.Any(x => x == ':'))
-                {
-                    methodRouting = $"{value.Substring(0, value.IndexOf(':'))}}}";
-                }
-                else
-                {
-                    methodRouting = value;
-                }
-            }
-
-            methodAddress
-                .AddRequestMethodWithUrl(RestClientFileKeyWords.GetRequestSign, controllerRouting,
-                    methodRouting);
-            var methodTmp = methodAddress.ToString();
-            fileContent.AddLine(methodAddress.ToString());
-            var allTmp = fileContent.ToString();
+            IGetMethodBuilder builder = GetMethodBuilder.Create(controllerRoute, method);
+            var res = builder.BuildRoute();
         }
         var tmp = fileContent.ToString();
     }

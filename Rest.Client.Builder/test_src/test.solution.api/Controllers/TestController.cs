@@ -15,13 +15,13 @@ public sealed class TestController : ControllerBase
     public TestController(ITestDataService testDataService)
         => _testDataService = testDataService;
 
-    [HttpGet]
-    public ActionResult<List<TestDataDto>> Get()
-        => Ok(_testDataService.GetAll());
-
-    [HttpGet("{id:guid}")]
-    public ActionResult<TestDataDto> GetById(Guid id)
-        => Ok(_testDataService.Get(id));
+    // [HttpGet]
+    // public ActionResult<List<TestDataDto>> Get()
+    //     => Ok(_testDataService.GetAll());
+    //
+    // [HttpGet("{id}")]
+    // public ActionResult<TestDataDto> GetById(Guid id)
+    //     => Ok(_testDataService.Get(id));
     
     [HttpGet("get-by-id-query")]
     public ActionResult<TestDataDto> GetByIdQuery(Guid id)
