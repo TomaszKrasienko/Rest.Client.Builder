@@ -2,5 +2,8 @@ namespace rest.client.builder.Const;
 
 internal static class RestClientFileKeyWords
 {
-    internal static string AddressVariable = "@url";
+    internal const string AddressVariable = "@url";
+    internal const string NewRequestSign = "###";
+    internal const string GetRequestSign = "GET";
+    internal const string AddressVariableInMethod = "{url}";
 }

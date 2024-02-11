@@ -39,7 +39,7 @@ internal sealed class ControllerHandler : IControllerHandler
         if (template.Contains(RoutingKeyWords.ControllerRoutingTemplate))
         {
             string controllerNameRoute = controllerType.Name.Replace(RoutingKeyWords.ControllerSufix, string.Empty);
-            template = template.Replace(RoutingKeyWords.ControllerRoutingTemplate, string.Empty);
+            template = template.Replace(RoutingKeyWords.ControllerRoutingTemplate, controllerNameRoute);
         }
 
         return template;
@@ -50,30 +50,34 @@ internal sealed class ControllerHandler : IControllerHandler
         var methods = GetMethodsByAttribute(controllerType, _getRouteAttributeType);
         foreach (var method in methods)
         {
+            StringBuilder methodAddress = new StringBuilder();
+            methodAddress.AddNewRequestSign();
             var attribute = (HttpGetAttribute)method
                 .GetCustomAttributes(_getRouteAttributeType, false)
                 .FirstOrDefault();
-
-            fileContent.AppendLine("###");
-            fileContent.Append("GET ");
-            fileContent.Append($"{{url}}/{controllerRouting}");
-            if (attribute.Template is not null)
+            
+            string methodRouting = string.Empty;
+            if (attribute!.Template is not null)
             {
-                fileContent.Append("/");
                 string value = attribute.Template;
                 if (value.Any(x => x == ':'))
                 {
-                    value = $"{value.Substring(0, value.IndexOf(':'))}}}";
+                    methodRouting = $"{value.Substring(0, value.IndexOf(':'))}}}";
                 }
-                fileContent.Append(value);
+                else
+                {
+                    methodRouting = value;
+                }
             }
 
-            fileContent.AppendLine();
-            fileContent.AppendLine();
-            var tmp = fileContent.ToString();
+            methodAddress
+                .AddRequestMethodWithUrl(RestClientFileKeyWords.GetRequestSign, controllerRouting,
+                    methodRouting);
+            var methodTmp = methodAddress.ToString();
+            fileContent.AddLine(methodAddress.ToString());
+            var allTmp = fileContent.ToString();
         }
-        
-        
+        var tmp = fileContent.ToString();
     }
 
     private IEnumerable<MethodInfo> GetMethodsByAttribute(Type controllerType, Type attributeType)

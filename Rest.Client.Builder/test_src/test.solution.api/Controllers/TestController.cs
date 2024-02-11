@@ -22,7 +22,11 @@ public sealed class TestController : ControllerBase
     [HttpGet("{id:guid}")]
     public ActionResult<TestDataDto> GetById(Guid id)
         => Ok(_testDataService.Get(id));
-
+    
+    [HttpGet("get-by-id-query")]
+    public ActionResult<TestDataDto> GetByIdQuery(Guid id)
+        => Ok(_testDataService.Get(id));
+    
     [HttpPost]
     public ActionResult Add(AddTestDataCommand command)
     {
