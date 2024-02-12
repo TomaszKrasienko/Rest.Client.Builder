@@ -1,46 +1,47 @@
-using System.Text;
-using Microsoft.AspNetCore.Mvc;
-using rest.client.builder.Extensions;
-using rest.client.builder.Searchers.Abstractions;
+using rest.client.builder.Models;
+using rest.client.builder.OpenApi.Communication.Clients.Abstractions;
+using rest.client.builder.OpenApi.Models;
 using rest.client.builder.Services.Abstractions;
 
 namespace rest.client.builder.Services;
 
 internal sealed class RestClientFileService : IRestClientFileService
 {
-    private StringBuilder fileContent = new StringBuilder(); 
-    private const string _urlAddress = "http://localhost:5226";
-    private const string _fileName = "";
-    private readonly IAssembliesSearcher _assembliesSearcher;
-    private readonly IControllerSearcher _controllerSearcher;
-    private readonly IControllerHandler _controllerHandler;
-    
-    public RestClientFileService(IAssembliesSearcher assembliesSearcher, IControllerSearcher controllerSearcher, 
-        IControllerHandler controllerHandler)
-    {
-        _assembliesSearcher = assembliesSearcher;
-        _controllerSearcher = controllerSearcher;
-        _controllerHandler = controllerHandler;
-    }
-    
-    public void Execute()
-    {
-        //add url variable
-        fileContent
-            .AddAddressVariable(_urlAddress)
-            .AddNewLine();
-        //get all assemblies
-        var assemblies = _assembliesSearcher.GetAllAssemblies();
-        //search all controllers
-        var controllers = _controllerSearcher.GetAllControllersFromAssemblies(assemblies);
+    private readonly IOpenApiClient _openApiClient;
 
-        //get controller path => route attribute
-        foreach (var controller in controllers)
-        {
-            _controllerHandler.HandleController(controller, fileContent);
-        }
-        
-        //from each controller get method with routing attribute
+    public RestClientFileService(IOpenApiClient openApiClient)
+    {
+        _openApiClient = openApiClient;
     }
+
+    public async Task Execute()
+    {
+        var openApiDoc = await _openApiClient.GetOpenApiDocumentation();
+        List<GetRequest> getRequestsList = new List<GetRequest>();
+        foreach (var path in openApiDoc.Paths)
+        {
+            if (path.Value.Get is not null)
+            {
+                var getRequest = HandleGet(path.Key, path.Value.Get);
+                getRequestsList.Add(getRequest);
+            }
+        }
+    }
+
+    private GetRequest HandleGet(string path, GetDoc getDoc)
+    {
+        GetRequest request = new GetRequest();
+        request.Path = path;
+        if (getDoc.Parameters is not null)
+        {
+            request.Parameters = new Dictionary<string, string>();
+            foreach (var param in getDoc.Parameters)
+            {
+                request.Parameters.Add(param.Name, param.In);
+            }
+        }
+        return request;
+    }
+    
     
 }

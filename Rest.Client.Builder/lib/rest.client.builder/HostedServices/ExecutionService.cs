@@ -16,13 +16,12 @@ internal sealed class ExecutionService : IHostedService
         _serviceProvider = serviceProvider;
     }
     
-    public Task StartAsync(CancellationToken cancellationToken)
+    public async Task StartAsync(CancellationToken cancellationToken)
     {
         _logger.LogInformation("Builder rest client file");
         using var scope = _serviceProvider.CreateScope();
         var handler = scope.ServiceProvider.GetRequiredService<IRestClientFileService>();
-        handler.Execute();
-        return Task.CompletedTask;
+        await handler.Execute();
     }
 
     public Task StopAsync(CancellationToken cancellationToken)

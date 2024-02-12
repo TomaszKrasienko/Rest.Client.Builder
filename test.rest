@@ -1,0 +1,4 @@
+@url = http://localhost:5226/swagger/v1/swagger.json
+
+###
+GET {{url}}

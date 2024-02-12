@@ -1,8 +1,8 @@
+using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
-using rest.client.builder.Builders;
 using rest.client.builder.HostedServices;
-using rest.client.builder.Searchers;
-using rest.client.builder.Searchers.Abstractions;
+using rest.client.builder.Middleware;
+using rest.client.builder.OpenApi.Communication.Configuration;
 using rest.client.builder.Services;
 using rest.client.builder.Services.Abstractions;
 
@@ -12,21 +12,24 @@ public static class Extensions
 {
     public static IServiceCollection AddRestClientBuilder(this IServiceCollection services)
         => services
-            .AddHostedServices()
-            .AddSearchers()
+            .AddOpenApiConfiguration("http://localhost:5226", 3, new TimeSpan(00,00,15),
+                "swagger/v1/swagger.json")
+            //.AddHostedServices()
             .AddServices();
 
     private static IServiceCollection AddHostedServices(this IServiceCollection services)
         => services
             .AddHostedService<ExecutionService>();
 
-    private static IServiceCollection AddSearchers(this IServiceCollection services)
-        => services
-            .AddSingleton<IAssembliesSearcher, AssembliesSearcher>()
-            .AddSingleton<IControllerSearcher, ControllersSearcher>();
-
     private static IServiceCollection AddServices(this IServiceCollection services)
         => services
-            .AddSingleton<IRestClientFileService, RestClientFileService>()
-            .AddSingleton<IControllerHandler, ControllerHandler>();
+            .AddScoped<IRestClientFileService, RestClientFileService>()
+            .AddSingleton<RestClientBuilderMiddleware>();
+
+    public static WebApplication UseRestClientBuilder(this WebApplication app)
+    {
+        app.UseMiddleware<RestClientBuilderMiddleware>();
+        return app;
+    }
+
 }
