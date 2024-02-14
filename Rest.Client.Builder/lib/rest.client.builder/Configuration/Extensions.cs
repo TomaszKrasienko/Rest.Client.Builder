@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
+using rest.client.builder.Builders.Configuration;
+using rest.client.builder.FileWriting.Configuration;
 using rest.client.builder.HostedServices;
 using rest.client.builder.Middleware;
 using rest.client.builder.OpenApi.Communication.Configuration;
@@ -14,7 +16,8 @@ public static class Extensions
         => services
             .AddOpenApiConfiguration("http://localhost:5226", 3, new TimeSpan(00,00,15),
                 "swagger/v1/swagger.json")
-            //.AddHostedServices()
+            .AddFileWriting()
+            .AddBuilders()
             .AddServices();
 
     private static IServiceCollection AddHostedServices(this IServiceCollection services)

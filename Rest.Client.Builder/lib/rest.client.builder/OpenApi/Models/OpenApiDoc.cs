@@ -1,3 +1,5 @@
+using System.Text.Json.Serialization;
+
 namespace rest.client.builder.OpenApi.Models;
 
 public class OpenApiDoc
@@ -21,8 +23,30 @@ public class GetDoc
 public class PostDoc
 {
     public List<string> Tags { get; set; }
-    public object RequestBody { get; set; }
+    public RequestBodyDoc RequestBody { get; set; }
     public object Responses { get; set; }
+}
+
+public class RequestBodyDoc
+{
+    public ContentDoc Content { get; set; }
+}
+
+public class ContentDoc
+{
+    [JsonPropertyName("application/json")]
+    public ApplicationJson ApplicationJson { get; set; }
+}
+
+public class ApplicationJson
+{
+    public SchemaDoc Schema { get; set; }
+}
+
+public class SchemaDoc
+{      
+    [JsonPropertyName("$ref")]
+    public string @ref { get; set; }
 }
 
 public class ParametersDoc

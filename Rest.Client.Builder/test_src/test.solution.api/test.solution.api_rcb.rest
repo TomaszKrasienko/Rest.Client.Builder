@@ -1,0 +1,12 @@
+@url=http://localhost:5226
+
+###
+GET {{url}}/Test
+
+@id
+###
+GET {{url}}/Test/{id}
+
+@id
+###
+GET {{url}}/Test/get-by-id-query?id={id}
