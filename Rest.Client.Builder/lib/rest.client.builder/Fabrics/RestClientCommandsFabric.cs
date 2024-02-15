@@ -17,6 +17,9 @@ internal static class RestClientCommandsFabric
     internal static StringBuilder AppendGetMethod(this StringBuilder sb)
         => sb.Append("GET {{url}}");
 
+    internal static StringBuilder AppendPostMethod(this StringBuilder sb)
+        => sb.Append("POST {{url}");
+
     internal static StringBuilder AppendParameter(this StringBuilder sb, string parameter)
         => sb.Append($"@{parameter}");
 

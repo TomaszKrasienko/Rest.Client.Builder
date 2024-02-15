@@ -5,6 +5,7 @@ namespace rest.client.builder.Builders.Abstractions;
 internal interface IRestClientFileBuilder
 {
     void SetAddress(string address);
-    void SetGetRequests(List<GetRequest> requests);
+    void SetGetRequest(GetRequest request);
+    void SetPostRequest(PostRequest request);
     string Build();
 }

@@ -18,10 +18,8 @@ internal sealed class RestClientFileBuilder : IRestClientFileBuilder
             .AppendNewLine()
             .AppendNewLine();
 
-    public void SetGetRequests(List<GetRequest> requests)
+    public void SetGetRequest(GetRequest request)
     {
-        foreach (var request in requests)
-        {
             var parameters = request.Parameters?.Keys?.ToList();
             //if null
             if (parameters is not null)
@@ -48,9 +46,8 @@ internal sealed class RestClientFileBuilder : IRestClientFileBuilder
                 .AppendText($"{request.Path}")
                 .AppendText(queryParamsString)
                 .AppendNewLine();
-        }
     }
-
+    
     private string GetQueryParameters(List<string> queryParameters)
     {
         if (queryParameters is null)
@@ -77,7 +74,13 @@ internal sealed class RestClientFileBuilder : IRestClientFileBuilder
         return sb.ToString();
     }
 
-
+    public void SetPostRequest(PostRequest request)
+    {
+        _fileContentBuilder
+            .AppendNewRequest()
+            .
+    }
+    
     public string Build()
         => _fileContentBuilder.ToString();
 }

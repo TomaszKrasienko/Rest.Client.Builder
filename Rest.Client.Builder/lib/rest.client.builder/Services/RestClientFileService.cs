@@ -24,21 +24,20 @@ internal sealed class RestClientFileService : IRestClientFileService
     {
         var openApiDoc = await _openApiClient.GetOpenApiDocumentation();
         _restClientFileBuilder.SetAddress("http://localhost:5226");
-        List<GetRequest> getRequestsList = new List<GetRequest>();
         foreach (var path in openApiDoc.Paths)
         {
             if (path.Value.Get is not null)
             {
                 var getRequest = HandleGet(path.Key, path.Value.Get);
-                getRequestsList.Add(getRequest);
+                _restClientFileBuilder.SetGetRequest(getRequest);
             }
 
             if (path.Value.Post is not null)
             {
                 var postRequest = HandlePost(path.Key, path.Value.Post);
+                _restClientFileBuilder.SetPostRequest(postRequest);
             }
         }
-        _restClientFileBuilder.SetGetRequests(getRequestsList);
         string fileContent = _restClientFileBuilder.Build();
         _fileWriter.Write(fileContent);
     }
@@ -64,6 +63,7 @@ internal sealed class RestClientFileService : IRestClientFileService
         request.Path = path;
         request.Reference = postDoc.RequestBody.Content.ApplicationJson.Schema.@ref;
         request.ContentType = "application/json";
+        return request;
     }
     
     
