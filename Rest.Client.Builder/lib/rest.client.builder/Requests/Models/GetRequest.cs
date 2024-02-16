@@ -1,4 +1,4 @@
-namespace rest.client.builder.Models;
+namespace rest.client.builder.Requests.Models;
 
 internal sealed class GetRequest
 {

@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
+using rest.client.builder.BodyComponents.Configuration;
 using rest.client.builder.Builders.Configuration;
 using rest.client.builder.FileWriting.Configuration;
 using rest.client.builder.HostedServices;
@@ -18,6 +19,7 @@ public static class Extensions
                 "swagger/v1/swagger.json")
             .AddFileWriting()
             .AddBuilders()
+            .AddBodyComponentsConfiguration()
             .AddServices();
 
     private static IServiceCollection AddHostedServices(this IServiceCollection services)

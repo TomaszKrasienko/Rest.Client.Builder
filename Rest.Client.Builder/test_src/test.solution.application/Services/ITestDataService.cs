@@ -5,7 +5,7 @@ namespace test.solution.application.Services;
 
 public interface ITestDataService
 {
-    void Add(AddTestDataCommand command);
+    void Add(Commands.AddTestDataCommand command);
     TestDataDto Get(Guid id);
     List<TestDataDto> GetAll();
 }

@@ -1,4 +1,4 @@
-using rest.client.builder.Models;
+using rest.client.builder.Requests.Models;
 
 namespace rest.client.builder.Builders.Abstractions;
 

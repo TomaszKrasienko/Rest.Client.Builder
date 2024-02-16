@@ -7,7 +7,7 @@ public sealed class TestDataService : ITestDataService
 {
     private List<TestDataDto> _data = new List<TestDataDto>();
 
-    public void Add(AddTestDataCommand command)
+    public void Add(Commands.AddTestDataCommand command)
         => _data.Add(new TestDataDto()
         {
             Id = Guid.NewGuid(),

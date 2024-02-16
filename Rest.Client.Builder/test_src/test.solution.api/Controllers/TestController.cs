@@ -28,7 +28,7 @@ public sealed class TestController : ControllerBase
         => Ok(_testDataService.Get(id));
     
     [HttpPost]
-    public ActionResult Add(AddTestDataCommand command)
+    public ActionResult Add(application.Commands.AddTestDataCommand command)
     {
         _testDataService.Add(command);
         return Ok();

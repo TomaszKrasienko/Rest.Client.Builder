@@ -1,7 +1,7 @@
 using System.Text;
 using rest.client.builder.Builders.Abstractions;
 using rest.client.builder.Fabrics;
-using rest.client.builder.Models;
+using rest.client.builder.Requests.Models;
 
 namespace rest.client.builder.Builders;
 
@@ -78,7 +78,12 @@ internal sealed class RestClientFileBuilder : IRestClientFileBuilder
     {
         _fileContentBuilder
             .AppendNewRequest()
-            .
+            .AppendNewLine()
+            .AppendPostMethod()
+            .AppendText(request.Path)
+            .AppendNewLine()
+            .AppendText(request.ContentType);
+        
     }
     
     public string Build()

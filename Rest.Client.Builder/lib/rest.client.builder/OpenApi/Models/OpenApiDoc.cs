@@ -1,13 +1,39 @@
 using System.Text.Json.Serialization;
+using Microsoft.AspNetCore.Identity;
 
 namespace rest.client.builder.OpenApi.Models;
 
 public class OpenApiDoc
 {
-    public Dictionary<string, Paths> Paths { get; set; }
+    public Dictionary<string, PathsDoc> Paths { get; set; }
+    public ComponentsDoc Components { get; set; } 
 }
 
-public class Paths
+public class ComponentsDoc
+{
+    public Dictionary<string, ComponentSchemaDoc> Schemas { get; set; }
+}
+
+public class ComponentSchemaDoc
+{
+    public string Type { get; set; }
+    public Dictionary<string, ComponentPropertiesDoc> Properties { get; set; }
+}
+
+public class ComponentPropertiesDoc
+{
+    public string Type { get; set; }
+    public bool Nullable { get; set; }
+    [JsonPropertyName($"$ref")] public string Ref { get; set; }
+    public ComponentPropertyItemDoc Items { get; set; }
+}
+
+public class ComponentPropertyItemDoc
+{
+    [JsonPropertyName($"$ref")] public string Ref { get; set; }
+}
+
+public class PathsDoc
 {
     public GetDoc Get { get; set; }
     public PostDoc Post { get; set; }
