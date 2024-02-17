@@ -4,5 +4,5 @@ namespace rest.client.builder.OpenApi.Communication.Clients.Abstractions;
 
 internal interface IOpenApiClient
 {
-    Task<OpenApiDoc> GetOpenApiDocumentation();
+    Task<OpenApiDocument> GetOpenApiDocumentation();
 }

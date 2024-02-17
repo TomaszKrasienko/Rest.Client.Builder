@@ -19,7 +19,7 @@ internal sealed class OpenApiClient : IOpenApiClient
         _openApiPath = openApiPath;
     }
     
-    public async Task<OpenApiDoc> GetOpenApiDocumentation()
+    public async Task<OpenApiDocument> GetOpenApiDocumentation()
     {
         try
         {
@@ -30,7 +30,7 @@ internal sealed class OpenApiClient : IOpenApiClient
             }
             else
             {
-                return await response.Content.ReadFromJsonAsync<OpenApiDoc>();
+                return await response.Content.ReadFromJsonAsync<OpenApiDocument>();
             }
         }
         catch (Exception ex)

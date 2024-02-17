@@ -7,12 +7,12 @@ namespace rest.client.builder.BodyComponents.PropertyStrategy;
 
 internal sealed class StrictTypeComponentPropertyMapperStrategy : IBodyComponentPropertyMapperStrategy
 {
-    public bool CanBeApplied(ComponentPropertiesDoc componentPropertiesDoc)
+    public bool CanBeApplied(ComponentPropertiesOpenApiDocument componentPropertiesDoc)
         => !string.IsNullOrWhiteSpace(componentPropertiesDoc.Type)
            && componentPropertiesDoc.Items is null
-           && string.IsNullOrWhiteSpace(componentPropertiesDoc.Ref);
+           && string.IsNullOrWhiteSpace(componentPropertiesDoc.Reference);
 
-    public KeyValuePair<string, BodyComponentProperty> Get(KeyValuePair<string, ComponentPropertiesDoc> openApiProperty)
+    public KeyValuePair<string, BodyComponentProperty> Get(KeyValuePair<string, ComponentPropertiesOpenApiDocument> openApiProperty)
         => new KeyValuePair<string, BodyComponentProperty>(openApiProperty.Key, new BodyComponentProperty()
         {
             Type = openApiProperty.Value.Type

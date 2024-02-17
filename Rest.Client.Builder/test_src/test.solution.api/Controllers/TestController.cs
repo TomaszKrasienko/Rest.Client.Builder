@@ -33,4 +33,11 @@ public sealed class TestController : ControllerBase
         _testDataService.Add(command);
         return Ok();
     }
+    
+    [HttpPost("{id:guid}")]
+    public ActionResult AddNew(Guid id, AddTestDataCommand command)
+    {
+        _testDataService.Add(command);
+        return Ok();
+    }
 }

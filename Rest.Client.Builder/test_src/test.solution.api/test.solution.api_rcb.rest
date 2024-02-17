@@ -8,16 +8,19 @@ POST {{url}}/Test
 Content-Type: application/json
 
 {
-"name":"test",
-"description":"test"
+  "name": "test",
+  "description": "test",
+  "parameterDto": {
+    "test": "test"
+  }
 }
 
 ###
-@id = bbf8e908-c253-4eb2-9718-9251fa1ef451
+@id
 ###
 GET {{url}}/Test/{{id}}
 
-# ###
-# @id
-# ###
-# GET {{url}}/Test/get-by-id-query?id={id}
+###
+@id
+###
+GET {{url}}/Test/get-by-id-query?id={{id}}

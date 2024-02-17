@@ -26,19 +26,19 @@ internal sealed class RestClientFileService : IRestClientFileService
 
     public async Task Execute()
     {
-        var openApiDoc = await _openApiClient.GetOpenApiDocumentation();
-        _bodyComponentsStorage.Load(openApiDoc);
+        var openApiDocument = await _openApiClient.GetOpenApiDocumentation();
+        _bodyComponentsStorage.Load(openApiDocument);
         _restClientFileBuilder.SetAddress("http://localhost:5226");
-        foreach (var path in openApiDoc.Paths)
+        foreach (var path in openApiDocument.RequestPaths)
         {
-            if (path.Value.Get is not null)
+            if (path.Value.GetRequest is not null)
             {
-                _restClientFileBuilder.SetGetRequest(path.Value.Get.AsGetRequest(path.Key));
+                _restClientFileBuilder.SetGetRequest(path.Value.GetRequest.AsGetRequest(path.Key));
             }
 
-            if (path.Value.Post is not null)
+            if (path.Value.PostRequest is not null)
             {
-                _restClientFileBuilder.SetPostRequest(path.Value.Post.AsPostRequest(path.Key));
+                _restClientFileBuilder.SetPostRequest(path.Value.PostRequest.AsPostRequest(path.Key));
             }
         }
         string fileContent = _restClientFileBuilder.Build();

@@ -5,6 +5,6 @@ namespace rest.client.builder.BodyComponents.PropertyStrategy.Abstractions;
 
 internal interface IBodyComponentPropertyMapperStrategy
 {
-    bool CanBeApplied(ComponentPropertiesDoc componentPropertiesDoc);
-    KeyValuePair<string, BodyComponentProperty> Get(KeyValuePair<string, ComponentPropertiesDoc> openApiProperty);
+    bool CanBeApplied(ComponentPropertiesOpenApiDocument componentPropertiesDoc);
+    KeyValuePair<string, BodyComponentProperty> Get(KeyValuePair<string, ComponentPropertiesOpenApiDocument> openApiProperty);
 }

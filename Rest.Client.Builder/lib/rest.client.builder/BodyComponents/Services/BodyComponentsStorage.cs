@@ -10,7 +10,7 @@ internal sealed class BodyComponentsStorage(IEnumerable<IBodyComponentPropertyMa
 {
     private List<BodyComponent> _components = new List<BodyComponent>();
 
-    public void Load(OpenApiDoc openApiDoc)
+    public void Load(OpenApiDocument openApiDoc)
     {
         var openApiComponents = openApiDoc.Components?.Schemas;
         if (openApiComponents is null)
@@ -31,7 +31,7 @@ internal sealed class BodyComponentsStorage(IEnumerable<IBodyComponentPropertyMa
         LoadReferenceAsComponents();
     }
     
-    private Dictionary<string, BodyComponentProperty> MapProperties(Dictionary<string, ComponentPropertiesDoc> openApiProperties)
+    private Dictionary<string, BodyComponentProperty> MapProperties(Dictionary<string, ComponentPropertiesOpenApiDocument> openApiProperties)
     {
         Dictionary<string, BodyComponentProperty> properties = new Dictionary<string, BodyComponentProperty>();
         foreach (var openApiProperty in openApiProperties)
