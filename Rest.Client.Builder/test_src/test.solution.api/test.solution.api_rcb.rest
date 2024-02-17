@@ -1,5 +1,6 @@
 @url=http://localhost:5226
 
+
 ###
 GET {{url}}/Test
 
@@ -17,10 +18,42 @@ Content-Type: application/json
 
 ###
 @id
+
 ###
-GET {{url}}/Test/{{id}}
+GET {{url}}/Test/parameter-in-route/{{id}}
 
 ###
 @id
+
 ###
-GET {{url}}/Test/get-by-id-query?id={{id}}
+GET {{url}}/Test/parameter-in-query?id={{id}}
+
+###
+@id-parameter-in-query
+
+###
+POST {{url}}/Test/parameter-in-query?id-parameter-in-query={{id-parameter-in-query}}
+Content-Type: application/json
+
+{
+  "name": "test",
+  "description": "test",
+  "parameterDto": {
+    "test": "test"
+  }
+}
+
+###
+@id-parameter-in-route
+
+###
+POST {{url}}/Test/{id}/parameter-in-route
+Content-Type: application/json
+
+{
+  "name": "test",
+  "description": "test",
+  "parameterDto": {
+    "test": "test"
+  }
+}

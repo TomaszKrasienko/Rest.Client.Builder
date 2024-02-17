@@ -20,34 +20,91 @@ internal sealed class RestClientFileBuilder(
 
     public void SetGetRequest(GetRequest request)
     {
-            var parameters = request.Parameters?.Keys?.ToList();
+        var requestName = request.Path.Split("/").LastOrDefault() ?? string.Empty;
+        var parameters_ = request.Parameters?.ToDictionary(x 
+            => $"{x}-{requestName}", y => y.Value);
+            // var parameters = request.Parameters?.Keys?.ToList();
             //if null
-            if (parameters is not null)
+        
+            if (parameters_ is not null)
             {
-                foreach (var parameter in parameters)
+                foreach (var parameter in parameters_)
                 {
                     _fileContentBuilder
                         .AppendNewLine()
                         .AppendNewRequest()
                         .AppendNewLine()
-                        .AppendParameter(parameter)
+                        .AppendParameter(parameter.Key)
                         .AppendNewLine();
                 }
             }
 
-            var queryParams = request.Parameters?
+            var queryParams = parameters_?
                 .Where(x => x.Value == "query")
                 .Select(x => x.Key)
                 .ToList();
             string queryParamsString = queryParams is not null ? GetQueryParameters(queryParams) : string.Empty;
 
+            var path = request.Path.Replace("{", "{{").Replace("}", "}}");
+            
             _fileContentBuilder
+                .AppendNewLine()
                 .AppendNewRequest()
                 .AppendNewLine()
                 .AppendGetMethod()
                 .AppendText($"{request.Path.Replace("{", "{{").Replace("}", "}}")}")
                 .AppendText(queryParamsString)
                 .AppendNewLine();
+    }
+
+    public void SetPostRequest(PostRequest request)
+    {
+        var requestName = request.Path.Split("/").LastOrDefault() ?? string.Empty;
+        var parameters = request.Parameters?.Keys?.ToList();
+        AppendParametersDefinition(parameters?.Select(x => $"{x}-{requestName}").ToList());
+
+        var queryParams = request.Parameters?
+            .Where(x => x.Value == "query")
+            .Select(x => x.Key)
+            .ToList();
+        string queryParamsString = queryParams is not null ? GetQueryParameters(queryParams?.Select(x => $"{x}-{requestName}").ToList()) : string.Empty;
+        
+        _fileContentBuilder
+            .AppendNewLine()
+            .AppendNewRequest()
+            .AppendNewLine()
+            .AppendPostMethod()
+            .AppendText(request.Path)
+            .AppendText(queryParamsString)
+            .AppendNewLine()
+            .AppendContentType(request.ContentType)
+            .AppendNewLine()
+            .AppendNewLine();
+
+        if (!string.IsNullOrWhiteSpace(request.Reference))
+        {
+            var bodyComponentType = request.Reference.Split('/').Last();
+            var component = bodyComponentsStorage.GetByName(bodyComponentType);
+            _fileContentBuilder
+                .AppendText(bodyComponentFileBuilder.Build(component))
+                .AppendNewLine();
+        }
+    }
+
+    private void AppendParametersDefinition(List<string> parameters)
+    {
+        if (parameters is not null)
+        {
+            foreach (var parameter in parameters)
+            {
+                _fileContentBuilder
+                    .AppendNewLine()
+                    .AppendNewRequest()
+                    .AppendNewLine()
+                    .AppendParameter(parameter)
+                    .AppendNewLine();
+            }
+        }
     }
     
     private string GetQueryParameters(List<string> queryParameters)
@@ -75,30 +132,9 @@ internal sealed class RestClientFileBuilder(
 
         return sb.ToString();
     }
-
-    public void SetPostRequest(PostRequest request)
-    {
-        _fileContentBuilder
-            .AppendNewLine()
-            .AppendNewRequest()
-            .AppendNewLine()
-            .AppendPostMethod()
-            .AppendText(request.Path)
-            .AppendNewLine()
-            .AppendContentType(request.ContentType)
-            .AppendNewLine()
-            .AppendNewLine();
-
-        if (!string.IsNullOrWhiteSpace(request.Reference))
-        {
-            var bodyComponentType = request.Reference.Split('/').Last();
-            var component = bodyComponentsStorage.GetByName(bodyComponentType);
-            _fileContentBuilder
-                .AppendText(bodyComponentFileBuilder.Build(component))
-                .AppendNewLine();
-        }
-    }
     
     public string Build()
         => _fileContentBuilder.ToString();
 }
+
+internal record ParameterData(string Source, string OriginalName);

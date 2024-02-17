@@ -4,8 +4,9 @@ namespace rest.client.builder.Requests.Models;
 
 internal sealed class PostRequest
 {
-    public string Path { get; set; }
-    public string Reference { get; set; }
-    public string ContentType { get; set; }
-    public BodyComponent Component { get; set; }
+    internal string Path { get; set; }
+    internal Dictionary<string, string> Parameters { get; set; }
+    internal string Reference { get; set; }
+    internal string ContentType { get; set; }
+    internal BodyComponent Component { get; set; }
 }

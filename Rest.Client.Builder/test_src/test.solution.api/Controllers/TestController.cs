@@ -19,11 +19,11 @@ public sealed class TestController : ControllerBase
     public ActionResult<List<TestDataDto>> Get()
         => Ok(_testDataService.GetAll());
     
-    [HttpGet("{id:guid}")]
+    [HttpGet("parameter-in-route/{id:guid}")]
     public ActionResult<TestDataDto> GetById(Guid id)
         => Ok(_testDataService.Get(id));
     
-    [HttpGet("get-by-id-query")]
+    [HttpGet("parameter-in-query")]
     public ActionResult<TestDataDto> GetByIdQuery(Guid id)
         => Ok(_testDataService.Get(id));
     
@@ -34,8 +34,15 @@ public sealed class TestController : ControllerBase
         return Ok();
     }
     
-    [HttpPost("{id:guid}")]
-    public ActionResult AddNew(Guid id, AddTestDataCommand command)
+    [HttpPost("{id:guid}/parameter-in-route")]
+    public ActionResult AddParameterInRoute(Guid id, AddTestDataCommand command)
+    {
+        _testDataService.Add(command);
+        return Ok();
+    }
+    
+    [HttpPost("parameter-in-query")]
+    public ActionResult AddParameterInQuery(Guid id, AddTestDataCommand command)
     {
         _testDataService.Add(command);
         return Ok();

@@ -21,6 +21,7 @@ internal static class RequestMappers
         => new PostRequest()
         {
             Path = path,
+            Parameters = doc.Parameters?.AsGetRequestParameters(),
             Reference = doc.RequestBody.Content.ApplicationJson.Schema.Reference,
             ContentType = "application/json"
         };
