@@ -1,6 +1,6 @@
 using rest.client.builder.BodyComponents.Services.Abstractions;
-using rest.client.builder.Builders.Abstractions;
-using rest.client.builder.FileWriting.Abstractions;
+using rest.client.builder.File.Abstractions;
+using rest.client.builder.File.Builders.Abstractions;
 using rest.client.builder.OpenApi.Communication.Clients.Abstractions;
 using rest.client.builder.OpenApi.Models;
 using rest.client.builder.Requests.Mappers;
@@ -28,7 +28,6 @@ internal sealed class RestClientFileService : IRestClientFileService
     {
         var openApiDoc = await _openApiClient.GetOpenApiDocumentation();
         _bodyComponentsStorage.Load(openApiDoc);
-        
         _restClientFileBuilder.SetAddress("http://localhost:5226");
         foreach (var path in openApiDoc.Paths)
         {
@@ -39,24 +38,10 @@ internal sealed class RestClientFileService : IRestClientFileService
 
             if (path.Value.Post is not null)
             {
-                var postRequest = HandlePost(path.Key, path.Value.Post);
-                _restClientFileBuilder.SetPostRequest(postRequest);
+                _restClientFileBuilder.SetPostRequest(path.Value.Post.AsPostRequest(path.Key));
             }
         }
         string fileContent = _restClientFileBuilder.Build();
         _fileWriter.Write(fileContent);
     }
-    
-    private PostRequest HandlePost(string path, PostDoc postDoc)
-    {
-        PostRequest request = new PostRequest();
-        request.Path = path;
-        request.Reference = postDoc.RequestBody.Content.ApplicationJson.Schema.@ref;
-        request.ContentType = "application/json";
-        string[] splitted = request.Reference.Split('/');
-        // BodyComponent component = _components.Where(x => x.Name == splitted.Last()).FirstOrDefault();
-        return request;
-    }
-    
-    
 }

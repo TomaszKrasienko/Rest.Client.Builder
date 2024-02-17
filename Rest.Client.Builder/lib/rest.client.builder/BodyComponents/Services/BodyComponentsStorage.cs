@@ -27,11 +27,13 @@ internal sealed class BodyComponentsStorage(IEnumerable<IBodyComponentPropertyMa
                 Properties = MapProperties(openApiComponent.Value.Properties)
             });
         }
+        
+        LoadReferenceAsComponents();
     }
     
-    private Dictionary<string, object> MapProperties(Dictionary<string, ComponentPropertiesDoc> openApiProperties)
+    private Dictionary<string, BodyComponentProperty> MapProperties(Dictionary<string, ComponentPropertiesDoc> openApiProperties)
     {
-        Dictionary<string, object> properties = new Dictionary<string, object>();
+        Dictionary<string, BodyComponentProperty> properties = new Dictionary<string, BodyComponentProperty>();
         foreach (var openApiProperty in openApiProperties)
         {
             var propertyMapperStrategy = propertyMapperStrategies.SingleOrDefault(x
@@ -45,6 +47,24 @@ internal sealed class BodyComponentsStorage(IEnumerable<IBodyComponentPropertyMa
         }
         return properties;
     }
-    
-    
+
+    private void LoadReferenceAsComponents()
+    {
+        foreach (var component in _components)
+        {
+            foreach (var property in component.Properties)
+            {
+                if (property.Value.Reference is not null)
+                {
+                    var typeName = property.Value.Reference.Split('/').Last();
+                    var referencedType = _components.FirstOrDefault(x => x.Name == typeName);
+                    property.Value.Component = referencedType;
+                }
+            }
+        }
+    }
+
+    public BodyComponent GetByName(string name)
+        => _components.FirstOrDefault(x => x.Name == name);
 }
+

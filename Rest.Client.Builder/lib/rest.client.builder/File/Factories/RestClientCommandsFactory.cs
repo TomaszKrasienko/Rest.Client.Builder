@@ -1,9 +1,8 @@
 using System.Text;
-using Microsoft.Extensions.Primitives;
 
-namespace rest.client.builder.Fabrics;
+namespace rest.client.builder.File.Factories;
 
-internal static class RestClientCommandsFabric
+internal static class RestClientCommandsFactory
 {
     internal static StringBuilder AppendNewLine(this StringBuilder sb)
         => sb.AppendLine();
@@ -18,11 +17,23 @@ internal static class RestClientCommandsFabric
         => sb.Append("GET {{url}}");
 
     internal static StringBuilder AppendPostMethod(this StringBuilder sb)
-        => sb.Append("POST {{url}");
+        => sb.Append("POST {{url}}");
 
     internal static StringBuilder AppendParameter(this StringBuilder sb, string parameter)
         => sb.Append($"@{parameter}");
 
     internal static StringBuilder AppendText(this StringBuilder sb, string text)
         => sb.Append(text);
+
+    internal static StringBuilder AppendJsonBeginning(this StringBuilder sb)
+        => sb.Append("{");
+    
+    internal static StringBuilder AppendJsonEnd(this StringBuilder sb)
+        => sb.Append("}");
+
+    internal static StringBuilder AppendTextInQuotes(this StringBuilder sb, string text)
+        => sb.Append($"\"{text}\"");
+
+    internal static StringBuilder AppendContentType(this StringBuilder sb, string text)
+        => sb.Append($"Content-Type: {text}");
 }

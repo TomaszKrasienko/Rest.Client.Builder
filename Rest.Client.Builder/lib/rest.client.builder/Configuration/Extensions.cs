@@ -1,9 +1,8 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using rest.client.builder.BodyComponents.Configuration;
-using rest.client.builder.Builders.Configuration;
-using rest.client.builder.FileWriting.Configuration;
-using rest.client.builder.HostedServices;
+using rest.client.builder.File.Builders.Configuration;
+using rest.client.builder.File.Configuration;
 using rest.client.builder.Middleware;
 using rest.client.builder.OpenApi.Communication.Configuration;
 using rest.client.builder.Services;
@@ -21,10 +20,6 @@ public static class Extensions
             .AddBuilders()
             .AddBodyComponentsConfiguration()
             .AddServices();
-
-    private static IServiceCollection AddHostedServices(this IServiceCollection services)
-        => services
-            .AddHostedService<ExecutionService>();
 
     private static IServiceCollection AddServices(this IServiceCollection services)
         => services

@@ -1,6 +1,6 @@
 using rest.client.builder.Requests.Models;
 
-namespace rest.client.builder.Builders.Abstractions;
+namespace rest.client.builder.File.Builders.Abstractions;
 
 internal interface IRestClientFileBuilder
 {

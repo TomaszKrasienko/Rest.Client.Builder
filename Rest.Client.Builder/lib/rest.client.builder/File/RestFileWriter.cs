@@ -1,7 +1,7 @@
 using System.Reflection;
-using rest.client.builder.FileWriting.Abstractions;
+using rest.client.builder.File.Abstractions;
 
-namespace rest.client.builder.FileWriting;
+namespace rest.client.builder.File;
 
 internal sealed class RestFileWriter : IFileWriter
 {
@@ -9,6 +9,6 @@ internal sealed class RestFileWriter : IFileWriter
     {
         var assemblyName = Assembly.GetEntryAssembly()?.GetName().Name;
         var fileName = $"{assemblyName}_rcb.rest";
-        File.WriteAllText(fileName,file);
+        System.IO.File.WriteAllText(fileName,file);
     }
 }

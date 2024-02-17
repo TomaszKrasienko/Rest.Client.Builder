@@ -1,16 +1,16 @@
 using System.Text;
-using rest.client.builder.Builders.Abstractions;
-using rest.client.builder.Fabrics;
+using rest.client.builder.BodyComponents.Services.Abstractions;
+using rest.client.builder.File.Builders.Abstractions;
+using rest.client.builder.File.Factories;
 using rest.client.builder.Requests.Models;
 
-namespace rest.client.builder.Builders;
+namespace rest.client.builder.File.Builders;
 
-internal sealed class RestClientFileBuilder : IRestClientFileBuilder
+internal sealed class RestClientFileBuilder(
+    IBodyComponentsStorage bodyComponentsStorage,
+    IBodyComponentFileBuilder bodyComponentFileBuilder) : IRestClientFileBuilder
 {
-    private StringBuilder _fileContentBuilder;
-
-    public RestClientFileBuilder()
-        => _fileContentBuilder = new StringBuilder();
+    private readonly StringBuilder _fileContentBuilder = new();
 
     public void SetAddress(string address)
         => _fileContentBuilder
@@ -28,6 +28,8 @@ internal sealed class RestClientFileBuilder : IRestClientFileBuilder
                 {
                     _fileContentBuilder
                         .AppendNewLine()
+                        .AppendNewRequest()
+                        .AppendNewLine()
                         .AppendParameter(parameter)
                         .AppendNewLine();
                 }
@@ -43,7 +45,7 @@ internal sealed class RestClientFileBuilder : IRestClientFileBuilder
                 .AppendNewRequest()
                 .AppendNewLine()
                 .AppendGetMethod()
-                .AppendText($"{request.Path}")
+                .AppendText($"{request.Path.Replace("{", "{{").Replace("}", "}}")}")
                 .AppendText(queryParamsString)
                 .AppendNewLine();
     }
@@ -61,7 +63,7 @@ internal sealed class RestClientFileBuilder : IRestClientFileBuilder
         }
 
         StringBuilder sb = new StringBuilder();
-        sb.Append($"?{queryParameters[0]}={{{queryParameters[0]}}}");
+        sb.Append($"?{queryParameters[0]}={{{{{queryParameters[0]}}}}}");
 
         if (queryParameters.Count > 1)
         {
@@ -77,13 +79,24 @@ internal sealed class RestClientFileBuilder : IRestClientFileBuilder
     public void SetPostRequest(PostRequest request)
     {
         _fileContentBuilder
+            .AppendNewLine()
             .AppendNewRequest()
             .AppendNewLine()
             .AppendPostMethod()
             .AppendText(request.Path)
             .AppendNewLine()
-            .AppendText(request.ContentType);
-        
+            .AppendContentType(request.ContentType)
+            .AppendNewLine()
+            .AppendNewLine();
+
+        if (!string.IsNullOrWhiteSpace(request.Reference))
+        {
+            var bodyComponentType = request.Reference.Split('/').Last();
+            var component = bodyComponentsStorage.GetByName(bodyComponentType);
+            _fileContentBuilder
+                .AppendText(bodyComponentFileBuilder.Build(component))
+                .AppendNewLine();
+        }
     }
     
     public string Build()

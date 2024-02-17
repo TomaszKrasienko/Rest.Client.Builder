@@ -15,7 +15,8 @@ internal static class Extensions
 
     private static IServiceCollection AddPropertyStrategy(this IServiceCollection services)
         => services
-            .AddSingleton<IBodyComponentPropertyMapperStrategy, StrictTypeComponentPropertyMapperStrategy>();
+            .AddSingleton<IBodyComponentPropertyMapperStrategy, StrictTypeComponentPropertyMapperStrategy>()
+            .AddSingleton<IBodyComponentPropertyMapperStrategy, ObjectTypeComponentPropertyMapperStrategy>();
 
     private static IServiceCollection AddServices(this IServiceCollection services)
         => services

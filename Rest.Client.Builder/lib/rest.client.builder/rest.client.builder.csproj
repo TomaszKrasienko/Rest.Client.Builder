@@ -15,5 +15,9 @@
     <ItemGroup>
         <FrameworkReference Include="Microsoft.AspNetCore.App" />
     </ItemGroup>
+    
+    <ItemGroup>
+        <InternalsVisibleTo Include="rest.client.builder.tests"/>
+    </ItemGroup>
 
 </Project>

@@ -1,4 +1,4 @@
-namespace rest.client.builder.FileWriting.Abstractions;
+namespace rest.client.builder.File.Abstractions;
 
 public interface IFileWriter
 {

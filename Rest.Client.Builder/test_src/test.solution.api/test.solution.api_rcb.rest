@@ -2,13 +2,22 @@
 
 ###
 GET {{url}}/Test
-###
-POST {{url}/Test
-application/json
-@id
-###
-GET {{url}}/Test/{id}
 
-@id
 ###
-GET {{url}}/Test/get-by-id-query?id={id}
+POST {{url}}/Test
+Content-Type: application/json
+
+{
+"name":"test",
+"description":"test"
+}
+
+###
+@id = bbf8e908-c253-4eb2-9718-9251fa1ef451
+###
+GET {{url}}/Test/{{id}}
+
+# ###
+# @id
+# ###
+# GET {{url}}/Test/get-by-id-query?id={id}

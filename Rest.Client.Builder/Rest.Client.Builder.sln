@@ -10,6 +10,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "lib", "lib", "{FF9963B4-880
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "rest.client.builder", "lib\rest.client.builder\rest.client.builder.csproj", "{ACE5B41B-9AD5-4868-946B-F7846CDA366B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "rest.client.builder.tests", "lib\rest.client.builder.tests\rest.client.builder.tests.csproj", "{04989370-48C8-4B76-BC3B-8A72B1C7A890}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -19,6 +21,7 @@ Global
 		{FDE6D8A8-2888-42A3-A86D-A7E71E361531} = {9090B626-C9CD-442F-A1F9-D08F5F496008}
 		{6FE720E0-066C-4511-9BF0-10958D1D6C64} = {9090B626-C9CD-442F-A1F9-D08F5F496008}
 		{ACE5B41B-9AD5-4868-946B-F7846CDA366B} = {FF9963B4-8809-4087-84D0-F296EB66FD72}
+		{04989370-48C8-4B76-BC3B-8A72B1C7A890} = {FF9963B4-8809-4087-84D0-F296EB66FD72}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{FDE6D8A8-2888-42A3-A86D-A7E71E361531}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -33,5 +36,9 @@ Global
 		{ACE5B41B-9AD5-4868-946B-F7846CDA366B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ACE5B41B-9AD5-4868-946B-F7846CDA366B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ACE5B41B-9AD5-4868-946B-F7846CDA366B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{04989370-48C8-4B76-BC3B-8A72B1C7A890}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{04989370-48C8-4B76-BC3B-8A72B1C7A890}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{04989370-48C8-4B76-BC3B-8A72B1C7A890}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{04989370-48C8-4B76-BC3B-8A72B1C7A890}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

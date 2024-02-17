@@ -1,7 +1,7 @@
 using Microsoft.Extensions.DependencyInjection;
-using rest.client.builder.Builders.Abstractions;
+using rest.client.builder.File.Builders.Abstractions;
 
-namespace rest.client.builder.Builders.Configuration;
+namespace rest.client.builder.File.Builders.Configuration;
 
 internal static class Extensions
 {
