@@ -17,22 +17,22 @@ Content-Type: application/json
 }
 
 ###
-@id
+@id=
 
 ###
 GET {{url}}/Test/parameter-in-route/{{id}}
 
 ###
-@id
+@id=
 
 ###
 GET {{url}}/Test/parameter-in-query?id={{id}}
 
 ###
-@id-parameter-in-query
+@id=
 
 ###
-POST {{url}}/Test/parameter-in-query?id-parameter-in-query={{id-parameter-in-query}}
+POST {{url}}/Test/parameter-in-query?id={{id}}
 Content-Type: application/json
 
 {
@@ -44,7 +44,7 @@ Content-Type: application/json
 }
 
 ###
-@id-parameter-in-route
+@id=
 
 ###
 POST {{url}}/Test/{id}/parameter-in-route
