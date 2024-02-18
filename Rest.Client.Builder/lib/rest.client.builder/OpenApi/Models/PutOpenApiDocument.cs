@@ -2,7 +2,7 @@ using System.Text.Json.Serialization;
 
 namespace rest.client.builder.OpenApi.Models;
 
-internal sealed record PostDoc
+internal sealed record PutOpenApiDocument
 {
     [JsonPropertyName("tags")]
     public List<string> Tags { get; init; }

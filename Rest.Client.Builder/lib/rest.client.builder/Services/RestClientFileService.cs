@@ -35,10 +35,25 @@ internal sealed class RestClientFileService : IRestClientFileService
             {
                 _restClientFileBuilder.SetGetRequest(path.Value.GetRequest.AsGetRequest(path.Key));
             }
+            
+            if (path.Value.DeleteRequest is not null)
+            {
+                _restClientFileBuilder.SetDeleteRequest(path.Value.DeleteRequest.AsDeleteRequest(path.Key));
+            }
 
             if (path.Value.PostRequest is not null)
             {
                 _restClientFileBuilder.SetPostRequest(path.Value.PostRequest.AsPostRequest(path.Key));
+            }
+            
+            if (path.Value.PatchRequest is not null)
+            {
+                _restClientFileBuilder.SetPatchRequest(path.Value.PatchRequest.AsPatchRequest(path.Key));
+            }
+            
+            if (path.Value.PutRequest is not null)
+            {
+                _restClientFileBuilder.SetPutRequest(path.Value.PutRequest.AsPutRequest(path.Key));
             }
         }
         string fileContent = _restClientFileBuilder.Build();

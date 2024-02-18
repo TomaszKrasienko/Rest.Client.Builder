@@ -14,6 +14,6 @@ internal sealed class GetByIdQueryHandler : IRequestHandler<GetByIdQuery, TodoTa
     public Task<TodoTask> Handle(GetByIdQuery request, CancellationToken cancellationToken)
     {
         var todoTask = _tasksService.GetById(request.Id);
-        return Task.FromResult(todoTask);
+        return Task.FromResult<TodoTask>(todoTask);
     }
 }

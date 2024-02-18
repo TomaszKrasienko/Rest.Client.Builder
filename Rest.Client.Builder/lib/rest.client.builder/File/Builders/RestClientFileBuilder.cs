@@ -51,6 +51,38 @@ internal sealed class RestClientFileBuilder(
             .AppendNewLine();
     }
 
+    public void SetDeleteRequest(DeleteRequest request)
+    {
+        parametersBuilder.SetParameters(request.Parameters);
+        if (parametersBuilder.IsParametersExists())
+        {
+            _fileContentBuilder.AppendText(parametersBuilder.GetAsVariable());
+        }
+        
+        var path = request.Path.Replace("{", "{{").Replace("}", "}}");
+
+        if (parametersBuilder.IsQueryParameters())
+        {
+            _fileContentBuilder
+                .AppendNewLine()
+                .AppendNewRequest()
+                .AppendNewLine()
+                .AppendDeleteMethod()
+                .AppendText(path)
+                .AppendText(parametersBuilder.GetAsQueryParameters())
+                .AppendNewLine();
+            return;
+        }
+
+        _fileContentBuilder
+            .AppendNewLine()
+            .AppendNewRequest()
+            .AppendNewLine()
+            .AppendDeleteMethod()
+            .AppendText(path)
+            .AppendNewLine();
+    }
+
     public void SetPostRequest(PostRequest request)
     {        
         parametersBuilder.SetParameters(request.Parameters);
@@ -59,6 +91,8 @@ internal sealed class RestClientFileBuilder(
             _fileContentBuilder.AppendText(parametersBuilder.GetAsVariable());
         }
 
+        var path = request.Path.Replace("{", "{{").Replace("}", "}}");
+        
         if (parametersBuilder.IsQueryParameters())
         {        
             _fileContentBuilder
@@ -66,7 +100,7 @@ internal sealed class RestClientFileBuilder(
                 .AppendNewRequest()
                 .AppendNewLine()
                 .AppendPostMethod()
-                .AppendText(request.Path)
+                .AppendText(path)
                 .AppendText(parametersBuilder.GetAsQueryParameters())
                 .AppendNewLine()
                 .AppendContentType(request.ContentType)
@@ -96,7 +130,101 @@ internal sealed class RestClientFileBuilder(
                 .AppendNewLine();
         }
     }
-    
+
+    public void SetPatchRequest(PatchRequest request)
+    {
+        parametersBuilder.SetParameters(request.Parameters);
+        if (parametersBuilder.IsParametersExists())
+        {
+            _fileContentBuilder.AppendText(parametersBuilder.GetAsVariable());
+        }
+
+        var path = request.Path.Replace("{", "{{").Replace("}", "}}");
+        if (parametersBuilder.IsQueryParameters())
+        {        
+            _fileContentBuilder
+                .AppendNewLine()
+                .AppendNewRequest()
+                .AppendNewLine()
+                .AppendPatchMethod()
+                .AppendText(path)
+                .AppendText(parametersBuilder.GetAsQueryParameters())
+                .AppendNewLine()
+                .AppendContentType(request.ContentType)
+                .AppendNewLine()
+                .AppendNewLine();
+        }
+        else
+        {
+            _fileContentBuilder
+                .AppendNewLine()
+                .AppendNewRequest()
+                .AppendNewLine()
+                .AppendPatchMethod()
+                .AppendText(path)
+                .AppendNewLine()
+                .AppendContentType(request.ContentType)
+                .AppendNewLine()
+                .AppendNewLine();
+        }
+        
+        if (!string.IsNullOrWhiteSpace(request.Reference))
+        {
+            var bodyComponentType = request.Reference.Split('/').Last();
+            var component = bodyComponentsStorage.GetByName(bodyComponentType);
+            _fileContentBuilder
+                .AppendText(bodyComponentFileBuilder.Build(component))
+                .AppendNewLine();
+        }
+    }
+
+    public void SetPutRequest(PutRequest request)
+    {
+        parametersBuilder.SetParameters(request.Parameters);
+        if (parametersBuilder.IsParametersExists())
+        {
+            _fileContentBuilder.AppendText(parametersBuilder.GetAsVariable());
+        }
+
+        var path = request.Path.Replace("{", "{{").Replace("}", "}}");
+        if (parametersBuilder.IsQueryParameters())
+        {        
+            _fileContentBuilder
+                .AppendNewLine()
+                .AppendNewRequest()
+                .AppendNewLine()
+                .AppendPutMethod()
+                .AppendText(path)
+                .AppendText(parametersBuilder.GetAsQueryParameters())
+                .AppendNewLine()
+                .AppendContentType(request.ContentType)
+                .AppendNewLine()
+                .AppendNewLine();
+        }
+        else
+        {
+            _fileContentBuilder
+                .AppendNewLine()
+                .AppendNewRequest()
+                .AppendNewLine()
+                .AppendPutMethod()
+                .AppendText(path)
+                .AppendNewLine()
+                .AppendContentType(request.ContentType)
+                .AppendNewLine()
+                .AppendNewLine();
+        }
+        
+        if (!string.IsNullOrWhiteSpace(request.Reference))
+        {
+            var bodyComponentType = request.Reference.Split('/').Last();
+            var component = bodyComponentsStorage.GetByName(bodyComponentType);
+            _fileContentBuilder
+                .AppendText(bodyComponentFileBuilder.Build(component))
+                .AppendNewLine();
+        }
+    }
+
     public string Build()
         => _fileContentBuilder.ToString();
 }

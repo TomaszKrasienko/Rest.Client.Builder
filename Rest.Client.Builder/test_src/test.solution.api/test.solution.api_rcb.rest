@@ -2,10 +2,57 @@
 
 
 ###
+@id=
+
+###
+GET {{url}}/Test/{{id}}
+
+###
+GET {{url}}/Test
+
+###
 POST {{url}}/Test
 Content-Type: application/json
 
 {
-  "id": "68391a5f-965b-4491-a117-be8221cb04bf",
+  "id": "d51cf370-6b76-42df-8f18-89c7afdc9210",
   "message": "test"
 }
+
+###
+@acceptTaskId=
+
+###
+PATCH {{url}}/Test/{{acceptTaskId}}/accept-task
+Content-Type: application/json
+
+
+###
+@rejectTaskId=
+
+###
+PATCH {{url}}/Test/{{rejectTaskId}}/reject-task
+Content-Type: application/json
+
+{
+  "id": "5112650f-2da9-4e11-bb6d-f9897a2e4e85",
+  "rejectMessage": "test"
+}
+
+###
+@updateTaskId=
+
+###
+PUT {{url}}/Test/update/{{updateTaskId}}
+Content-Type: application/json
+
+{
+  "id": "90b2e1a4-3d48-410d-a4ef-0360875fccb3",
+  "message": "test"
+}
+
+###
+@deleteTaskId=
+
+###
+DELETE {{url}}/Test/delete/{{deleteTaskId}}

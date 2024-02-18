@@ -18,9 +18,18 @@ internal static class RestClientCommandsFactory
 
     internal static StringBuilder AppendPostMethod(this StringBuilder sb)
         => sb.Append("POST {{url}}");
+    
+    internal static StringBuilder AppendPatchMethod(this StringBuilder sb)
+        => sb.Append("PATCH {{url}}");
+    
+    internal static StringBuilder AppendDeleteMethod(this StringBuilder sb)
+        => sb.Append("DELETE {{url}}");
+    
+    internal static StringBuilder AppendPutMethod(this StringBuilder sb)
+        => sb.Append("PUT {{url}}");
 
     internal static StringBuilder AppendParameter(this StringBuilder sb, string parameter)
-        => sb.Append($"@{parameter}");
+        => sb.Append($"@{parameter}=");
 
     internal static StringBuilder AppendText(this StringBuilder sb, string text)
         => sb.Append(text);
