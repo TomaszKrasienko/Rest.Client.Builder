@@ -1,8 +1,7 @@
+using MediatR;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
-using test.solution.application.Commands;
-using test.solution.application.DTO;
-using test.solution.application.Services;
+using test.solution.application.CQRS.Tasks.Commands.Add;
 
 namespace test.solution.api.Controllers;
 
@@ -10,41 +9,17 @@ namespace test.solution.api.Controllers;
 [Route("[controller]")]
 public sealed class TestController : ControllerBase
 {
-    private readonly ITestDataService _testDataService;
+    private readonly IMediator _mediator;
 
-    public TestController(ITestDataService testDataService)
-        => _testDataService = testDataService;
+    public TestController(IMediator mediator)
+    {
+        _mediator = mediator;
+    }
 
-    [HttpGet]
-    public ActionResult<List<TestDataDto>> Get()
-        => Ok(_testDataService.GetAll());
-    
-    [HttpGet("parameter-in-route/{id:guid}")]
-    public ActionResult<TestDataDto> GetById(Guid id)
-        => Ok(_testDataService.Get(id));
-    
-    [HttpGet("parameter-in-query")]
-    public ActionResult<TestDataDto> GetByIdQuery(Guid id)
-        => Ok(_testDataService.Get(id));
-    
     [HttpPost]
-    public ActionResult Add(application.Commands.AddTestDataCommand command)
+    public ActionResult AddTask(AddTaskCommand command)
     {
-        _testDataService.Add(command);
-        return Ok();
-    }
-    
-    [HttpPost("{id:guid}/parameter-in-route")]
-    public ActionResult AddParameterInRoute(Guid id, AddTestDataCommand command)
-    {
-        _testDataService.Add(command);
-        return Ok();
-    }
-    
-    [HttpPost("parameter-in-query")]
-    public ActionResult AddParameterInQuery(Guid id, AddTestDataCommand command)
-    {
-        _testDataService.Add(command);
-        return Ok();
+        _mediator.Send(command);
+        return NoContent();
     }
 }

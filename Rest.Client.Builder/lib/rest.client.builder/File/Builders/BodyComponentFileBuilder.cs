@@ -27,7 +27,7 @@ internal sealed class BodyComponentFileBuilder : IBodyComponentFileBuilder
             }
             else
             {
-                lines.Add($"\"{property.Key}\":{GetDefaultTypeValue(property.Value.Type)}");
+                lines.Add($"\"{property.Key}\":{GetDefaultTypeValue(property.Value.Type, property.Key)}");
             }
         }
 
@@ -40,14 +40,14 @@ internal sealed class BodyComponentFileBuilder : IBodyComponentFileBuilder
         return sb.ToString();
     } 
 
-    private string GetDefaultTypeValue(string typeName)
+    private string GetDefaultTypeValue(string typeName, string name)
     {
         if (typeName == "int")
         {
             return "1";
         }
 
-        if (typeName == "Guid")
+        if (typeName == "string" && name.ToLowerInvariant().Contains("id"))
         {
             return "\"" + Guid.NewGuid().ToString() + "\"";
         }

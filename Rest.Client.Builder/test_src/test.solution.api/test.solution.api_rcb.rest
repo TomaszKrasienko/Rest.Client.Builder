@@ -2,58 +2,10 @@
 
 
 ###
-GET {{url}}/Test
-
-###
 POST {{url}}/Test
 Content-Type: application/json
 
 {
-  "name": "test",
-  "description": "test",
-  "parameterDto": {
-    "test": "test"
-  }
-}
-
-###
-@id=
-
-###
-GET {{url}}/Test/parameter-in-route/{{id}}
-
-###
-@id=
-
-###
-GET {{url}}/Test/parameter-in-query?id={{id}}
-
-###
-@id=
-
-###
-POST {{url}}/Test/parameter-in-query?id={{id}}
-Content-Type: application/json
-
-{
-  "name": "test",
-  "description": "test",
-  "parameterDto": {
-    "test": "test"
-  }
-}
-
-###
-@id=
-
-###
-POST {{url}}/Test/{id}/parameter-in-route
-Content-Type: application/json
-
-{
-  "name": "test",
-  "description": "test",
-  "parameterDto": {
-    "test": "test"
-  }
+  "id": "68391a5f-965b-4491-a117-be8221cb04bf",
+  "message": "test"
 }

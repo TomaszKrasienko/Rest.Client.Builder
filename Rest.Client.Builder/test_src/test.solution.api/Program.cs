@@ -1,5 +1,5 @@
 using rest.client.builder.Configuration;
-using test.solution.application.Services;
+using test.solution.application.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,7 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddControllers();
-builder.Services.AddSingleton<ITestDataService, TestDataService>();
+builder.Services.AddApplication();
 builder.Services.AddRestClientBuilder();
 var app = builder.Build();
 
